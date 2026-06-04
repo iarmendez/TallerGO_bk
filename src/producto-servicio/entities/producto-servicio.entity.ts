@@ -24,9 +24,17 @@ export class ProductoServicio {
   @Column({ type: 'enum', enum: ['SI', 'NO'], default: 'SI', name: 'activo' })
   estaActivo: string;
 
-  @Column({ type: 'enum', enum: ['SI', 'NO'], default: 'NO', name: 'eliminado' })
+  @Column({
+    type: 'enum',
+    enum: ['SI', 'NO'],
+    default: 'NO',
+    name: 'eliminado',
+  })
   estaEliminado: string;
 
-  @OneToMany(() => SubcategoriaProdServ, (subcatProdServ) => subcatProdServ.productoServicio)
+  @OneToMany(
+    () => SubcategoriaProdServ,
+    (subcatProdServ) => subcatProdServ.productoServicio,
+  )
   subcategorias: SubcategoriaProdServ[];
 }

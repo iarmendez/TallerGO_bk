@@ -1,5 +1,13 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
-import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Put,
+  Delete,
+} from '@nestjs/common';
 import { ProductoServicioService } from './producto-servicio.service';
 import { ProductoServicio } from './entities/producto-servicio.entity';
 
@@ -8,7 +16,9 @@ export class ProductoServicioController {
   constructor(private readonly service: ProductoServicioService) {}
 
   @Post()
-  async create(@Body() data: Partial<ProductoServicio>): Promise<ProductoServicio> {
+  async create(
+    @Body() data: Partial<ProductoServicio>,
+  ): Promise<ProductoServicio> {
     return this.service.create(data);
   }
 

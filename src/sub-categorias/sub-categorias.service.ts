@@ -10,8 +10,12 @@ export class SubCategoriasService {
     private readonly subCategoriaRepository: Repository<SubCategoria>,
   ) {}
 
-  async create(createSubCategoriaDto: Partial<SubCategoria>): Promise<SubCategoria> {
-    const subCategoria = this.subCategoriaRepository.create(createSubCategoriaDto);
+  async create(
+    createSubCategoriaDto: Partial<SubCategoria>,
+  ): Promise<SubCategoria> {
+    const subCategoria = this.subCategoriaRepository.create(
+      createSubCategoriaDto,
+    );
     return await this.subCategoriaRepository.save(subCategoria);
   }
 
@@ -26,11 +30,15 @@ export class SubCategoriasService {
       where: { id },
       relations: ['categoria', 'productosServicios'],
     });
-    if (!subCategoria) throw new NotFoundException(`SubCategoría con ID ${id} no encontrada`);
+    if (!subCategoria)
+      throw new NotFoundException(`SubCategoría con ID ${id} no encontrada`);
     return subCategoria;
   }
 
-  async update(id: number, updateSubCategoriaDto: Partial<SubCategoria>): Promise<SubCategoria> {
+  async update(
+    id: number,
+    updateSubCategoriaDto: Partial<SubCategoria>,
+  ): Promise<SubCategoria> {
     await this.subCategoriaRepository.update(id, updateSubCategoriaDto);
     return this.findOne(id);
   }
@@ -44,6 +52,4 @@ export class SubCategoriasService {
       where: { categoria: { id: idCategoria } },
     });
   }
-
-
 }

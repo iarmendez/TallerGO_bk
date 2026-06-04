@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, Column } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
+  Column,
+} from 'typeorm';
 import { SubCategoria } from '../../sub-categorias/entities/sub-categoria.entity';
 import { ProductoServicio } from '../../producto-servicio/entities/producto-servicio.entity';
 
@@ -7,7 +13,10 @@ export class SubcategoriaProdServ {
   @PrimaryGeneratedColumn({ name: 'idsubcategoriaprodserv' })
   id: number;
 
-  @ManyToOne(() => SubCategoria, (subCategoria) => subCategoria.productosServicios)
+  @ManyToOne(
+    () => SubCategoria,
+    (subCategoria) => subCategoria.productosServicios,
+  )
   @JoinColumn({ name: 'idsubcategoria' })
   subCategoria: SubCategoria;
 
@@ -18,6 +27,11 @@ export class SubcategoriaProdServ {
   @Column({ type: 'enum', enum: ['SI', 'NO'], default: 'SI', name: 'activo' })
   estaActivo: string;
 
-  @Column({ type: 'enum', enum: ['SI', 'NO'], default: 'NO', name: 'eliminado' })
+  @Column({
+    type: 'enum',
+    enum: ['SI', 'NO'],
+    default: 'NO',
+    name: 'eliminado',
+  })
   estaEliminado: string;
 }

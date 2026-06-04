@@ -7,9 +7,7 @@ import { Taller } from '../talleres/entities/talleres.entity';
 import { SubCategoria } from '../sub-categorias/entities/sub-categoria.entity';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Categoria, Taller, SubCategoria]),
-  ],
+  imports: [TypeOrmModule.forFeature([Categoria, Taller, SubCategoria])],
   providers: [CategoriasService],
   controllers: [CategoriasController],
 })

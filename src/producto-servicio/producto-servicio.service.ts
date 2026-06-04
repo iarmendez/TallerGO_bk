@@ -20,17 +20,22 @@ export class ProductoServicioService {
   }
 
   async findOne(id: number): Promise<ProductoServicio> {
-    const prodServ = await this.productoServicioRepository.findOne({ 
+    const prodServ = await this.productoServicioRepository.findOne({
       where: { id },
-      relations: ['subcategorias'], 
+      relations: ['subcategorias'],
     });
     if (!prodServ) {
-      throw new NotFoundException(`Producto/Servicio con ID ${id} no encontrado`);
+      throw new NotFoundException(
+        `Producto/Servicio con ID ${id} no encontrado`,
+      );
     }
     return prodServ;
   }
 
-  async update(id: number, data: Partial<ProductoServicio>): Promise<ProductoServicio> {
+  async update(
+    id: number,
+    data: Partial<ProductoServicio>,
+  ): Promise<ProductoServicio> {
     await this.productoServicioRepository.update(id, data);
     return this.findOne(id);
   }

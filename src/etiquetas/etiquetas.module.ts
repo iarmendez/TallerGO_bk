@@ -4,6 +4,6 @@ import { EtiquetasController } from './etiquetas.controller';
 
 @Module({
   providers: [EtiquetasService],
-  controllers: [EtiquetasController]
+  controllers: [EtiquetasController],
 })
 export class EtiquetasModule {}

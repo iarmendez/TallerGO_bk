@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Put,
+  Delete,
+} from '@nestjs/common';
 import { TipoTalleresService } from './tipo-talleres.service';
 import { TipoTaller } from './entities/tipo-taller.entity';
 
@@ -7,7 +15,9 @@ export class TipoTalleresController {
   constructor(private readonly tipoTalleresService: TipoTalleresService) {}
 
   @Post()
-  async create(@Body() createTipoTallerDto: Partial<TipoTaller>): Promise<TipoTaller> {
+  async create(
+    @Body() createTipoTallerDto: Partial<TipoTaller>,
+  ): Promise<TipoTaller> {
     return this.tipoTalleresService.create(createTipoTallerDto);
   }
 

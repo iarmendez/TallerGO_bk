@@ -26,11 +26,15 @@ export class CategoriasService {
       where: { id },
       relations: ['taller', 'subCategorias'],
     });
-    if (!categoria) throw new NotFoundException(`Categoría con ID ${id} no encontrada`);
+    if (!categoria)
+      throw new NotFoundException(`Categoría con ID ${id} no encontrada`);
     return categoria;
   }
 
-  async update(id: number, updateCategoriaDto: Partial<Categoria>): Promise<Categoria> {
+  async update(
+    id: number,
+    updateCategoriaDto: Partial<Categoria>,
+  ): Promise<Categoria> {
     await this.categoriaRepository.update(id, updateCategoriaDto);
     return this.findOne(id);
   }

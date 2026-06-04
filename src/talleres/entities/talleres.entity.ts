@@ -1,6 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
-import { Empresa } from '../../empresas/entities/empresas.entity'; 
-import { TipoTaller } from '../../tipo-talleres/entities/tipo-taller.entity'; 
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+  OneToMany,
+} from 'typeorm';
+import { Empresa } from '../../empresas/entities/empresas.entity';
+import { TipoTaller } from '../../tipo-talleres/entities/tipo-taller.entity';
 import { Categoria } from '../../categorias/entities/categoria.entity';
 
 @Entity('talleres')
@@ -40,10 +47,14 @@ export class Taller {
   @Column({ type: 'enum', enum: ['SI', 'NO'], default: 'SI', name: 'activo' })
   estaActivo: string;
 
-  @Column({ type: 'enum', enum: ['SI', 'NO'], default: 'NO', name: 'eliminado' })
+  @Column({
+    type: 'enum',
+    enum: ['SI', 'NO'],
+    default: 'NO',
+    name: 'eliminado',
+  })
   estaEliminado: string;
 
-  @OneToMany(() => Categoria, categoria => categoria.taller)
+  @OneToMany(() => Categoria, (categoria) => categoria.taller)
   categorias: Categoria[];
-  
 }

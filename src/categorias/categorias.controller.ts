@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Put,
+  Delete,
+} from '@nestjs/common';
 import { CategoriasService } from './categorias.service';
 import { Categoria } from './entities/categoria.entity';
 
@@ -7,7 +15,9 @@ export class CategoriasController {
   constructor(private readonly categoriasService: CategoriasService) {}
 
   @Post()
-  async create(@Body() createCategoriaDto: Partial<Categoria>): Promise<Categoria> {
+  async create(
+    @Body() createCategoriaDto: Partial<Categoria>,
+  ): Promise<Categoria> {
     return this.categoriasService.create(createCategoriaDto);
   }
 

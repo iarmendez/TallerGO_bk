@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Put,
+  Delete,
+} from '@nestjs/common';
 import { SubCategoriasService } from './sub-categorias.service';
 import { SubCategoria } from './entities/sub-categoria.entity';
 
@@ -7,7 +15,9 @@ export class SubCategoriasController {
   constructor(private readonly subCategoriasService: SubCategoriasService) {}
 
   @Post()
-  async create(@Body() createSubCategoriaDto: Partial<SubCategoria>): Promise<SubCategoria> {
+  async create(
+    @Body() createSubCategoriaDto: Partial<SubCategoria>,
+  ): Promise<SubCategoria> {
     return this.subCategoriasService.create(createSubCategoriaDto);
   }
 

@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Put,
+  Delete,
+} from '@nestjs/common';
 import { PromocionesService } from './promociones.service';
 import { Promocion } from './entities/promocion.entity';
 
@@ -7,7 +15,9 @@ export class PromocionesController {
   constructor(private readonly promocionesService: PromocionesService) {}
 
   @Post()
-  async create(@Body() createPromocionDto: Partial<Promocion>): Promise<Promocion> {
+  async create(
+    @Body() createPromocionDto: Partial<Promocion>,
+  ): Promise<Promocion> {
     return this.promocionesService.create(createPromocionDto);
   }
 

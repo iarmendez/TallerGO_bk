@@ -26,11 +26,15 @@ export class PromocionesService {
       where: { id },
       relations: ['taller', 'productoServicio', 'etiqueta'],
     });
-    if (!promocion) throw new NotFoundException(`Promoción con ID ${id} no encontrada`);
+    if (!promocion)
+      throw new NotFoundException(`Promoción con ID ${id} no encontrada`);
     return promocion;
   }
 
-  async update(id: number, updatePromocionDto: Partial<Promocion>): Promise<Promocion> {
+  async update(
+    id: number,
+    updatePromocionDto: Partial<Promocion>,
+  ): Promise<Promocion> {
     await this.promocionRepository.update(id, updatePromocionDto);
     return this.findOne(id);
   }

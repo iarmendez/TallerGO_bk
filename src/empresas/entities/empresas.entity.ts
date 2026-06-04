@@ -27,7 +27,12 @@ export class Empresa {
   @Column({ type: 'enum', enum: ['SI', 'NO'], default: 'SI', name: 'activo' })
   estaActivo: string;
 
-  @Column({ type: 'enum', enum: ['SI', 'NO'], default: 'NO', name: 'eliminado' })
+  @Column({
+    type: 'enum',
+    enum: ['SI', 'NO'],
+    default: 'NO',
+    name: 'eliminado',
+  })
   estaEliminado: string;
 
   @OneToMany(() => Taller, (taller) => taller.empresa)

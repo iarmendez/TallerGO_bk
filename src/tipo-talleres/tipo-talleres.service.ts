@@ -20,12 +20,18 @@ export class TipoTalleresService {
   }
 
   async findOne(id: number): Promise<TipoTaller> {
-    const tipoTaller = await this.tipoTallerRepository.findOne({ where: { id } });
-    if (!tipoTaller) throw new NotFoundException(`TipoTaller con ID ${id} no encontrado`);
+    const tipoTaller = await this.tipoTallerRepository.findOne({
+      where: { id },
+    });
+    if (!tipoTaller)
+      throw new NotFoundException(`TipoTaller con ID ${id} no encontrado`);
     return tipoTaller;
   }
 
-  async update(id: number, updateTipoTallerDto: Partial<TipoTaller>): Promise<TipoTaller> {
+  async update(
+    id: number,
+    updateTipoTallerDto: Partial<TipoTaller>,
+  ): Promise<TipoTaller> {
     await this.tipoTallerRepository.update(id, updateTipoTallerDto);
     return this.findOne(id);
   }

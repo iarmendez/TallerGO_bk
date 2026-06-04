@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 import { Taller } from '../../talleres/entities/talleres.entity';
 import { ProductoServicio } from '../../producto-servicio/entities/producto-servicio.entity';
 import { Etiqueta } from '../../etiquetas/entities/etiqueta.entity';
@@ -32,6 +38,11 @@ export class Promocion {
   @Column({ type: 'enum', enum: ['SI', 'NO'], default: 'SI', name: 'activo' })
   estaActivo: string;
 
-  @Column({ type: 'enum', enum: ['SI', 'NO'], default: 'NO', name: 'eliminado' })
+  @Column({
+    type: 'enum',
+    enum: ['SI', 'NO'],
+    default: 'NO',
+    name: 'eliminado',
+  })
   estaEliminado: string;
 }

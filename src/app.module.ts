@@ -9,6 +9,8 @@ import { CategoriasModule } from './categorias/categorias.module';
 import { SubCategoriasModule } from './sub-categorias/sub-categorias.module';
 import { PromocionesModule } from './promociones/promociones.module';
 import { EtiquetasModule } from './etiquetas/etiquetas.module';
+import { UsuariosModule } from './usuarios/usuarios.module';
+import { TipoUsuariosModule } from './tipo-usuarios/tipo-usuarios.module';
 
 @Module({
   imports: [
@@ -26,7 +28,17 @@ import { EtiquetasModule } from './etiquetas/etiquetas.module';
         synchronize: true, // Solo en desarrollo
       }),
       inject: [ConfigService],
-    }), ProductoServicioModule, TalleresModule, EmpresasModule, TipoTalleresModule, CategoriasModule, SubCategoriasModule, PromocionesModule, EtiquetasModule,
+    }),
+    ProductoServicioModule,
+    TalleresModule,
+    EmpresasModule,
+    TipoTalleresModule,
+    CategoriasModule,
+    SubCategoriasModule,
+    PromocionesModule,
+    EtiquetasModule,
+    UsuariosModule,
+    TipoUsuariosModule,
   ],
 })
 export class AppModule {}

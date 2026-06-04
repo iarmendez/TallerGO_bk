@@ -21,11 +21,15 @@ export class EmpresasService {
 
   async findOne(id: number): Promise<Empresa> {
     const empresa = await this.empresaRepository.findOne({ where: { id } });
-    if (!empresa) throw new NotFoundException(`Empresa con ID ${id} no encontrada`);
+    if (!empresa)
+      throw new NotFoundException(`Empresa con ID ${id} no encontrada`);
     return empresa;
   }
 
-  async update(id: number, updateEmpresaDto: Partial<Empresa>): Promise<Empresa> {
+  async update(
+    id: number,
+    updateEmpresaDto: Partial<Empresa>,
+  ): Promise<Empresa> {
     await this.empresaRepository.update(id, updateEmpresaDto);
     return this.findOne(id);
   }
