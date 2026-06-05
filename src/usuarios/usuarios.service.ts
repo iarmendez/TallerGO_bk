@@ -13,7 +13,7 @@ export class UsuariosService {
     @InjectRepository(TipoUsuario)
     private readonly tipoUsuarioRepository: Repository<TipoUsuario>,
     private readonly dataSource: DataSource,
-  ) {}
+  ) { }
 
   async create(usuarioData: Partial<Usuario>): Promise<UsuarioResponseDto> {
     const tipoUsuario = await this.tipoUsuarioRepository.findOne({
@@ -26,13 +26,17 @@ export class UsuariosService {
     if (!tipoUsuario) {
       throw new NotFoundException('Tipo de usuario no válido');
     }
-    await this.dataSource.query('CALL CreateUser(?, ?, ?, ?, ?)', [
-      usuarioData.tipoUsuario?.id,
-      usuarioData.usuario,
-      usuarioData.nombres,
-      usuarioData.apellidos,
-      usuarioData.pwd,
-    ]);
+    if (usuarioData.pwd) {
+      if (usuarioData.pwd?.length > 0) {
+        await this.dataSource.query('CALL CreateUser(?, ?, ?, ?, ?)', [
+          usuarioData.tipoUsuario?.id,
+          usuarioData.usuario,
+          usuarioData.nombres,
+          usuarioData.apellidos,
+          usuarioData.pwd,
+        ]);
+      }
+    }
     const usuario = await this.usuarioRepository.findOne({
       where: {
         usuario: usuarioData.usuario,
