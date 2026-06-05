@@ -1,10 +1,18 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { TipoUsuariosService } from './tipo-usuarios.service';
 import { TipoUsuario } from './entities/tipo-usuario.entity';
 
 @Controller('tipo-usuarios')
 export class TipoUsuariosController {
-  constructor(private readonly tipoUsuariosService: TipoUsuariosService) { }
+  constructor(private readonly tipoUsuariosService: TipoUsuariosService) {}
 
   @Get()
   async findAll() {

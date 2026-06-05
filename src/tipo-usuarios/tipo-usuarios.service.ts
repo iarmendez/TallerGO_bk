@@ -8,7 +8,7 @@ export class TipoUsuariosService {
   constructor(
     @InjectRepository(TipoUsuario)
     private tipoUsuarioRepository: Repository<TipoUsuario>,
-  ) { }
+  ) {}
 
   async findAll() {
     const tipoUsuarios = await this.tipoUsuarioRepository.find({

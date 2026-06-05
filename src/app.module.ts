@@ -1,4 +1,9 @@
-import { Module } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ProductoServicioModule } from './producto-servicio/producto-servicio.module';
@@ -11,6 +16,9 @@ import { PromocionesModule } from './promociones/promociones.module';
 import { EtiquetasModule } from './etiquetas/etiquetas.module';
 import { UsuariosModule } from './usuarios/usuarios.module';
 import { TipoUsuariosModule } from './tipo-usuarios/tipo-usuarios.module';
+import { AuthModule } from './auth/auth.module';
+import { JwtMiddleware } from './common/middlewares/jwt/jwt.middleware';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -29,6 +37,14 @@ import { TipoUsuariosModule } from './tipo-usuarios/tipo-usuarios.module';
       }),
       inject: [ConfigService],
     }),
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        secret: configService.get('JWT_SECRET') || 'default_secret',
+        // signOptions: { expiresIn: '8h' },
+      }),
+      inject: [ConfigService],
+    }),
     ProductoServicioModule,
     TalleresModule,
     EmpresasModule,
@@ -39,6 +55,17 @@ import { TipoUsuariosModule } from './tipo-usuarios/tipo-usuarios.module';
     EtiquetasModule,
     UsuariosModule,
     TipoUsuariosModule,
+    AuthModule,
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(JwtMiddleware)
+      .exclude(
+        { path: '/auth/login', method: RequestMethod.POST },
+        { path: '/usuarios', method: RequestMethod.POST },
+      )
+      .forRoutes('*');
+  }
+}
