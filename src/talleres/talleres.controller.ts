@@ -6,6 +6,7 @@ import {
   Param,
   Put,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { TalleresService } from './talleres.service';
 import { Taller } from './entities/talleres.entity';
@@ -20,8 +21,8 @@ export class TalleresController {
   }
 
   @Get()
-  async findAll(): Promise<Taller[]> {
-    return this.talleresService.findAll();
+  async findAll(@Query('search') search?: string): Promise<Taller[]> {
+    return this.talleresService.findSearch(search);
   }
 
   @Get(':id')

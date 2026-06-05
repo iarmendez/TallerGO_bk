@@ -19,6 +19,7 @@ import { TipoUsuariosModule } from './tipo-usuarios/tipo-usuarios.module';
 import { AuthModule } from './auth/auth.module';
 import { JwtMiddleware } from './common/middlewares/jwt/jwt.middleware';
 import { JwtModule } from '@nestjs/jwt';
+import { OpinionesModule } from './opiniones/opiniones.module';
 
 @Module({
   imports: [
@@ -56,6 +57,7 @@ import { JwtModule } from '@nestjs/jwt';
     UsuariosModule,
     TipoUsuariosModule,
     AuthModule,
+    OpinionesModule,
   ],
 })
 export class AppModule implements NestModule {

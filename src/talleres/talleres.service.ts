@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Brackets } from 'typeorm';
 import { Taller } from './entities/talleres.entity';
 import { TipoTaller } from 'src/tipo-talleres/entities/tipo-taller.entity';
 
@@ -29,10 +29,51 @@ export class TalleresService {
     return await this.tallerRepository.save(taller);
   }
 
+  async findSearch(search?: string): Promise<Taller[]> {
+    const query = this.tallerRepository
+      .createQueryBuilder('taller')
+      .leftJoinAndSelect('taller.empresa', 'empresa')
+      .leftJoinAndSelect('taller.tipoTaller', 'tipoTaller')
+      .where('taller.estaEliminado = :no', { no: 'NO' })
+      .andWhere('taller.estaActivo = :si', { si: 'SI' });
+
+    if (search) {
+      query.andWhere(
+        new Brackets((qb) => {
+          qb.where('taller.nombre LIKE :search', { search: `%${search}%` })
+            .orWhere('taller.direccion LIKE :search', { search: `%${search}%` })
+            .orWhere((subQb) => {
+              const subQuery = subQb
+                .subQuery()
+                .select('1')
+                .from('categorias', 'cat')
+                .leftJoin('sub_categorias', 'subcat', 'subcat.idcategoria = cat.idcategoria')
+                .leftJoin('subcategorias_prodserv', 'scps', 'scps.idsubcategoria = subcat.idsubcategoria')
+                .leftJoin('producto_servicio', 'ps', 'ps.idprodserv = scps.idprodserv')
+                .leftJoin('prodserv_etiquetas', 'pe', 'pe.idprodserv = ps.idprodserv')
+                .leftJoin('etiquetas', 'eti', 'eti.idetiqueta = pe.idetiqueta')
+                .where('cat.idtaller = taller.idtaller')
+                .andWhere('eti.nombre LIKE :search')
+                .andWhere('cat.eliminado = :no')
+                .andWhere('subcat.eliminado = :no')
+                .andWhere('scps.eliminado = :no')
+                .andWhere('ps.eliminado = :no')
+                .andWhere('pe.eliminado = :no')
+                .andWhere('eti.eliminado = :no');
+              return `EXISTS ${subQuery.getQuery()}`;
+            });
+        }),
+      );
+      query.setParameters({ search: `%${search}%`, no: 'NO', si: 'SI' });
+    } else {
+      query.setParameters({ no: 'NO', si: 'SI' });
+    }
+
+    return await query.getMany();
+  }
+
   async findAll(): Promise<Taller[]> {
-    return await this.tallerRepository.find({
-      relations: ['empresa', 'tipoTaller'],
-    });
+    return this.findSearch();
   }
 
   async findOne(id: number): Promise<Taller> {
