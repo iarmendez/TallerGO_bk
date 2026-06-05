@@ -1,5 +1,11 @@
 import { TipoUsuario } from 'src/tipo-usuarios/entities/tipo-usuario.entity';
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({ name: 'usuarios' })
 export class Usuario {
