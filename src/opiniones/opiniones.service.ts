@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Opinion } from './entities/opinion.entity';
@@ -101,7 +105,9 @@ export class OpinionesService {
     const opinion = await this.findOne(id);
 
     if (opinion.usuario.id !== userId) {
-      throw new BadRequestException('No tienes permiso para editar esta reseña');
+      throw new BadRequestException(
+        'No tienes permiso para editar esta reseña',
+      );
     }
 
     if (updateDto.estrellas !== undefined) {
@@ -121,7 +127,9 @@ export class OpinionesService {
     const opinion = await this.findOne(id);
 
     if (opinion.usuario.id !== userId) {
-      throw new BadRequestException('No tienes permiso para eliminar esta reseña');
+      throw new BadRequestException(
+        'No tienes permiso para eliminar esta reseña',
+      );
     }
 
     opinion.estaEliminado = 'SI';

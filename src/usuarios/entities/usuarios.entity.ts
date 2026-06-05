@@ -3,7 +3,7 @@ import {
   Column,
   Entity,
   JoinColumn,
-  OneToOne,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -11,7 +11,7 @@ import {
 export class Usuario {
   @PrimaryGeneratedColumn({ name: 'idusuario' })
   id: number;
-  @OneToOne(() => TipoUsuario)
+  @ManyToOne(() => TipoUsuario)
   @JoinColumn({ name: 'idtipousuario' })
   tipoUsuario: TipoUsuario;
   @Column({ type: 'varchar', length: 255 })

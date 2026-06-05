@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Brackets } from 'typeorm';
 import { Taller } from './entities/talleres.entity';
 import { TipoTaller } from 'src/tipo-talleres/entities/tipo-taller.entity';
+import { haversine } from 'src/utils/functions/distance';
 
 @Injectable()
 export class TalleresService {
@@ -11,7 +12,7 @@ export class TalleresService {
     private readonly tallerRepository: Repository<Taller>,
     @InjectRepository(TipoTaller)
     private readonly tipoTallerRepository: Repository<TipoTaller>,
-  ) {}
+  ) { }
 
   async create(createTallerDto: Partial<Taller>): Promise<Taller> {
     const tipoTaller = await this.tipoTallerRepository.findOne({
@@ -29,7 +30,12 @@ export class TalleresService {
     return await this.tallerRepository.save(taller);
   }
 
-  async findSearch(search?: string): Promise<Taller[]> {
+  async findSearch(
+    search?: string,
+    maxDistance?: number,
+    latitude?: number,
+    longitude?: number,
+  ): Promise<Taller[]> {
     const query = this.tallerRepository
       .createQueryBuilder('taller')
       .leftJoinAndSelect('taller.empresa', 'empresa')
@@ -47,10 +53,26 @@ export class TalleresService {
                 .subQuery()
                 .select('1')
                 .from('categorias', 'cat')
-                .leftJoin('sub_categorias', 'subcat', 'subcat.idcategoria = cat.idcategoria')
-                .leftJoin('subcategorias_prodserv', 'scps', 'scps.idsubcategoria = subcat.idsubcategoria')
-                .leftJoin('producto_servicio', 'ps', 'ps.idprodserv = scps.idprodserv')
-                .leftJoin('prodserv_etiquetas', 'pe', 'pe.idprodserv = ps.idprodserv')
+                .leftJoin(
+                  'sub_categorias',
+                  'subcat',
+                  'subcat.idcategoria = cat.idcategoria',
+                )
+                .leftJoin(
+                  'subcategorias_prodserv',
+                  'scps',
+                  'scps.idsubcategoria = subcat.idsubcategoria',
+                )
+                .leftJoin(
+                  'producto_servicio',
+                  'ps',
+                  'ps.idprodserv = scps.idprodserv',
+                )
+                .leftJoin(
+                  'prodserv_etiquetas',
+                  'pe',
+                  'pe.idprodserv = ps.idprodserv',
+                )
                 .leftJoin('etiquetas', 'eti', 'eti.idetiqueta = pe.idetiqueta')
                 .where('cat.idtaller = taller.idtaller')
                 .andWhere('eti.nombre LIKE :search')
@@ -68,8 +90,29 @@ export class TalleresService {
     } else {
       query.setParameters({ no: 'NO', si: 'SI' });
     }
+    const talleres = await query.getMany();
 
-    return await query.getMany();
+    let talleresResponse = talleres;
+    if (maxDistance && latitude && longitude) {
+      talleresResponse = talleres.filter((taller) => {
+        const distance = haversine(
+          latitude,
+          longitude,
+          taller.latitud,
+          taller.longitud,
+        );
+        console.log(distance);
+        return distance <= maxDistance;
+      });
+    }
+
+    return talleresResponse.map((taller) => ({
+      ...taller,
+      distancia:
+        latitude && longitude
+          ? haversine(latitude, longitude, taller.latitud, taller.longitud)
+          : 0,
+    }));
   }
 
   async findAll(): Promise<Taller[]> {

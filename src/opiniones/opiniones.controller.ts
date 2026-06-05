@@ -25,7 +25,12 @@ export class OpinionesController {
     @Body('comentarios') comentarios?: string,
   ) {
     const userId = req['user'].id;
-    return this.opinionesService.create(userId, idtaller, estrellas, comentarios);
+    return this.opinionesService.create(
+      userId,
+      idtaller,
+      estrellas,
+      comentarios,
+    );
   }
 
   @Get()
